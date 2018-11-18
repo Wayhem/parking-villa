@@ -6,7 +6,10 @@
     <template v-if="menu==1">
         <ingresos></ingresos>
     </template>
-    <<template v-if="menu==3">
+    <template v-if="menu==3">
         <celdas></celdas>
+    </template>
+    <template v-if="menu==4">
+        <facturas></facturas>
     </template>
 @endsection

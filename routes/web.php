@@ -23,3 +23,6 @@ Route::post('/ingreso/{id}', 'IngresoController@destroy');
 Route::get('/celda', 'CeldaController@index');
 Route::post('/celda', 'CeldaController@store');
 Route::put('/celda/{id}', 'CeldaController@update');
+
+Route::get('/factura', 'APIController@index');
+Route::post('/factura', 'APIController@store');

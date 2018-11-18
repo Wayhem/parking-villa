@@ -24,9 +24,9 @@
                             <li class="nav-item">
                                 <a @click="menu=3" class="nav-link" href="i#"><i class="icon-chart"></i> Reporte Celdas</a>
                             </li>
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a @click="menu=4" class="nav-link" href="#"><i class="icon-chart"></i> Reporte Ventas</a>
-                            </li> -->
+                            </li>
                         </ul>
                     </li>
                 </ul>

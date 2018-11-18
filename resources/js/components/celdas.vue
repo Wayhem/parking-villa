@@ -51,7 +51,6 @@
                         me.arrayNum.push(response.data[i].a_time);
                     }
                     me.arrayNum.sort(function(a, b){return b - a});
-                    console.log(me.arrayNum);
                     for (let y = 0; y < me.arrayNum.length; y++) {
                         for (let i=0;i<response.data.length;i++) {
                             for (let d = 0; d < me.usedKey.length; d++) {

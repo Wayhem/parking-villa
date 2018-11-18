@@ -375,6 +375,20 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+                console.log(tiempo);
+                let tiempoS;
+                tiempoS = tiempo/1000;
+                let date = new Date;
+                date = this.formatDate(date);
+                axios.post('/factura', {
+                    'tiempo': tiempoS,
+                    'fecha': date
+                }).then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             displayBoleto(tiempo, precio){
                 precio = parseInt(precio);
@@ -708,6 +722,17 @@
                         break;
                     }
                 }
+            },
+            formatDate(date) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+
+                return [year, month, day].join('-');
             },
             getInit(){
                 let me = this;
