@@ -182,22 +182,6 @@
                     console.log(error);
                 });
             },
-            // registrarIngreso() {
-            //     if(this.validarIngreso()){
-            //         return;
-            //     }
-            //     let me = this;
-            //     axios.post('/ingreso',{
-            //         'plate': this.plate,
-            //         'brand': this.brand
-            //     }).then(function (response) {
-            //         me.cerrarModal();
-            //         me.listarIngreso(1,'','plate');
-            //     })
-            //     .catch(function (error) {
-            //         console.log(error);
-            //     });
-            // },
             actualizarIngreso(){
                 if(this.validarIngreso()){
                     return;

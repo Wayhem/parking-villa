@@ -578,6 +578,7 @@
                     }
                 });
                 let timeMs;
+                let timeObsMs;
                 this.cslot.forEach(function(slot){
                     if (foundCell.codename == slot.code){
                         timeMs = slot.timeElapsed;
@@ -598,12 +599,19 @@
                             obstructorCar = ingreso;
                         }
                     });
-                    this.liberarCelda(obstructorCell);
+                    this.cslot.forEach(function(slot){
+                        if (obstructorCell.codename == slot.code){
+                            timeObsMs = slot.timeElapsed;
+                        }
+                    });
+                    this.liberarCelda(obstructorCell, timeObsMs);
                 }
-                this.liberarCelda(foundCell);
-                this.almacenarCeldaObs(obstructorCar, foundCell);
-                let cellEdit = 'c'+foundCell.codename;
-                this.editCar(obstructorCar, cellEdit);
+                this.liberarCelda(foundCell, timeMs);
+                if (obstructorCar) {
+                    this.almacenarCeldaObs(obstructorCar, foundCell);
+                    let cellEdit = 'c'+foundCell.codename;
+                    this.editCar(obstructorCar, cellEdit);
+                }
                 this.storePrecio(foundCar, timeMs);
             },
             registrarSalida(){

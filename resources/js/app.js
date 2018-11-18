@@ -19,6 +19,7 @@ window.Vue = require('vue');
 
 Vue.component('maincontent', require('./components/maincontent.vue'));
 Vue.component('ingresos', require('./components/ingresos.vue'));
+Vue.component('celdas', require('./components/celdas.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 
