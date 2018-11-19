@@ -47721,7 +47721,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {}).catch(function (error) {
                 console.log(error);
             });
-            console.log(tiempo);
             var tiempoS = void 0;
             tiempoS = tiempo / 1000;
             var date = new Date();

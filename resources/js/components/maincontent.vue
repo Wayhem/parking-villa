@@ -375,7 +375,6 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-                console.log(tiempo);
                 let tiempoS;
                 tiempoS = tiempo/1000;
                 let date = new Date;
