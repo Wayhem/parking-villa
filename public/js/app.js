@@ -48809,7 +48809,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var url = '/ingreso?page=' + page + '&buscar=' + buscar + '&cryteria=' + cryteria;
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
-                console.log(respuesta);
                 if (respuesta.pagination) {
                     me.arrayIngreso = respuesta.ingresos.data;
                     me.pagination = respuesta.pagination;
@@ -50098,8 +50097,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var url = '/ingreso?page=' + page + '&buscar=' + buscar + '&cryteria=' + cryteria;
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
-                me.arrayIngreso = respuesta.ingresos.data;
-                me.pagination = respuesta.pagination;
+                if (respuesta.pagination) {
+                    me.arrayIngreso = respuesta.ingresos.data;
+                    me.pagination = respuesta.pagination;
+                } else {
+                    me.arrayIngreso = respuesta;
+                }
             }).catch(function (error) {
                 console.log(error);
             });
