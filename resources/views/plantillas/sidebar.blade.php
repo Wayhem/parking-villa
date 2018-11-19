@@ -13,9 +13,9 @@
                             <li class="nav-item">
                                 <a @click="menu=1" class="nav-link" href="#"><i class="icon-arrow-right-circle"></i> Ingresos</a>
                             </li>
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a @click="menu=2" class="nav-link" href="#"><i class="icon-arrow-left-circle"></i> Salidas</a>
-                            </li> -->
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item nav-dropdown">
