@@ -48809,6 +48809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var url = '/ingreso?page=' + page + '&buscar=' + buscar + '&cryteria=' + cryteria;
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
+                console.log(respuesta);
                 me.arrayIngreso = respuesta.ingresos.data;
                 me.pagination = respuesta.pagination;
             }).catch(function (error) {
