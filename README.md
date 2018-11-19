@@ -1,6 +1,6 @@
 # Parking-lot-alegra
 
-Small testing project
+Small testing project for alegra.com
 
 ## Getting Started
 
