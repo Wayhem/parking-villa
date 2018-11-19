@@ -43,7 +43,6 @@
             listarFacturas () {
                 let me = this;
                 axios.get('/factura').then(function (response) {
-                    console.log(response);
                     me.arrayFactura = response.data;
                 })
                 .catch(function (error) {

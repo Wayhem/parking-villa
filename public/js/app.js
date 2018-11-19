@@ -49764,7 +49764,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         listarFacturas: function listarFacturas() {
             var me = this;
             axios.get('/factura').then(function (response) {
-                console.log(response);
                 me.arrayFactura = response.data;
             }).catch(function (error) {
                 console.log(error);
