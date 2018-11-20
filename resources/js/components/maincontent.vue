@@ -381,15 +381,15 @@
                 tiempoS = tiempo/1000;
                 let date = new Date;
                 date = this.formatDate(date);
-                // axios.post('/factura', {
-                //     'tiempo': tiempoS,
-                //     'fecha': date
-                // }).then(function (response) {
-                //     console.log(response);
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
+                axios.post('/factura', {
+                    'tiempo': tiempoS,
+                    'fecha': date
+                }).then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             displayBoleto(tiempo, precio){
                 precio = parseInt(precio);
@@ -800,8 +800,6 @@
             },
             updateCells(response, idingreso){
                 let me = this;
-                //console.log(response); todos los carros
-                //console.log(idingreso); id carros en puestos no libres
                 response.data.forEach(function(data){
                     for (let i = 0; i < idingreso.length; i++) {
                         const element = idingreso[i];
@@ -814,7 +812,6 @@
             },
             passFoundCar(data){
                 let date_test = new Date(data.created_at.replace(/-/g,"/"));
-                console.log(date_test);
                 this.cslot.forEach(function(slot){
                     if (slot.cell == data.currentc){
                         slot.marca = data.brand;
@@ -841,15 +838,12 @@
                 if(e) e.preventDefault();
                 if (this.tipoAccion == 1) {
                     this.registrarIngreso();
-                    console.log('pressed');
                 }
                 if (this.tipoAccion == 2) {
                     this.registrarSalida();
-                    console.log('pressed');
                 }
             },
             passFoundCarChange(data){
-                console.log(data);
                 let date_test = new Date(data.created_at.replace(/-/g,"/"));
                 this.cslot.forEach(function(slot){
                     //data modeling needed

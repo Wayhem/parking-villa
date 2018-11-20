@@ -47728,15 +47728,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tiempoS = tiempo / 1000;
             var date = new Date();
             date = this.formatDate(date);
-            // axios.post('/factura', {
-            //     'tiempo': tiempoS,
-            //     'fecha': date
-            // }).then(function (response) {
-            //     console.log(response);
-            // })
-            // .catch(function (error) {
-            //     console.log(error);
-            // });
+            axios.post('/factura', {
+                'tiempo': tiempoS,
+                'fecha': date
+            }).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         displayBoleto: function displayBoleto(tiempo, precio) {
             precio = parseInt(precio);
@@ -48122,8 +48121,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         updateCells: function updateCells(response, idingreso) {
             var me = this;
-            //console.log(response); todos los carros
-            //console.log(idingreso); id carros en puestos no libres
             response.data.forEach(function (data) {
                 for (var i = 0; i < idingreso.length; i++) {
                     var element = idingreso[i];
@@ -48136,7 +48133,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         passFoundCar: function passFoundCar(data) {
             var date_test = new Date(data.created_at.replace(/-/g, "/"));
-            console.log(date_test);
             this.cslot.forEach(function (slot) {
                 if (slot.cell == data.currentc) {
                     slot.marca = data.brand;
@@ -48163,15 +48159,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (e) e.preventDefault();
             if (this.tipoAccion == 1) {
                 this.registrarIngreso();
-                console.log('pressed');
             }
             if (this.tipoAccion == 2) {
                 this.registrarSalida();
-                console.log('pressed');
             }
         },
         passFoundCarChange: function passFoundCarChange(data) {
-            console.log(data);
             var date_test = new Date(data.created_at.replace(/-/g, "/"));
             this.cslot.forEach(function (slot) {
                 //data modeling needed
