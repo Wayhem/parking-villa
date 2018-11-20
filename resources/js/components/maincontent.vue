@@ -223,7 +223,9 @@
                 postedCar: {},
                 plateOut: '',
                 errorDisponible: 0,
-                celdas: []
+                celdas: [],
+                obstructorCar: {},
+                foundCell: {}
             }
         },
         created() {
@@ -371,6 +373,8 @@
                     'tiempofinal': tiempo,
                     'egresado': 1
                 }).then(function (response) {
+                    me.getInit();
+                    me.reboot();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -379,15 +383,15 @@
                 tiempoS = tiempo/1000;
                 let date = new Date;
                 date = this.formatDate(date);
-                axios.post('/factura', {
-                    'tiempo': tiempoS,
-                    'fecha': date
-                }).then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                // axios.post('/factura', {
+                //     'tiempo': tiempoS,
+                //     'fecha': date
+                // }).then(function (response) {
+                //     console.log(response);
+                // })
+                // .catch(function (error) {
+                //     console.log(error);
+                // });
             },
             displayBoleto(tiempo, precio){
                 precio = parseInt(precio);
@@ -425,6 +429,9 @@
                     'a_time': aTime
                 }).then(function (response) {
                     me.cerrarModal();
+                    if (me.obstructorCar) {
+                        me.almacenarCeldaObs(me.obstructorCar, me.foundCell);
+                    }
                     me.reboot();
                     me.getInit();
                 })
@@ -572,7 +579,7 @@
                 let me = this;
                 let foundCell;
                 ingresos.data.forEach(function(data){
-                    if (data.plate == me.plate){
+                    if (data.plate == me.plateOut){
                         foundCar = data;
                     }
                 });
@@ -619,9 +626,10 @@
                     });
                     this.liberarCelda(obstructorCell, timeObsMs);
                 }
+                this.obstructorCar = obstructorCar;
+                this.foundCell = foundCell;
                 this.liberarCelda(foundCell, timeMs);
                 if (obstructorCar) {
-                    this.almacenarCeldaObs(obstructorCar, foundCell);
                     let cellEdit = 'c'+foundCell.codename;
                     this.editCar(obstructorCar, cellEdit);
                 }
@@ -631,6 +639,9 @@
                 if(this.validarIngreso()){
                     return;
                 }
+                let me = this;
+                this.plate = this.plate.toLowerCase();
+                this.plateOut = this.plate;
                 if (this.validarDisponible()){
                     this.getCeldasFull();
                 } else {
@@ -647,13 +658,14 @@
             },
             almacenarCeldaObs(car, cell){
                 let me = this;
+                console.log(cell);
                 axios.put('/celda/'+cell.id,{
                     'id': cell.id,
                     'idingreso': car.id,
                     'libre': 0
                 }).then(function (response) {
-                    me.getInit();
-                    me.reboot();
+                    me.obstructorCar = {};
+                    me.foundCell = {};
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -689,6 +701,7 @@
                         cellid = responseget.data[i].id;
                     }
                 }
+                console.log(responsepost.id);
                 axios.put('/celda/'+cellid,{
                     'id': cellid,
                     'idingreso': responsepost.id,

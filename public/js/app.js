@@ -47579,7 +47579,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             postedCar: {},
             plateOut: '',
             errorDisponible: 0,
-            celdas: []
+            celdas: [],
+            obstructorCar: {},
+            foundCell: {}
         };
     },
     created: function created() {
@@ -47718,21 +47720,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'preciofinal': precio,
                 'tiempofinal': tiempo,
                 'egresado': 1
-            }).then(function (response) {}).catch(function (error) {
+            }).then(function (response) {
+                me.getInit();
+                me.reboot();
+            }).catch(function (error) {
                 console.log(error);
             });
             var tiempoS = void 0;
             tiempoS = tiempo / 1000;
             var date = new Date();
             date = this.formatDate(date);
-            axios.post('/factura', {
-                'tiempo': tiempoS,
-                'fecha': date
-            }).then(function (response) {
-                console.log(response);
-            }).catch(function (error) {
-                console.log(error);
-            });
+            // axios.post('/factura', {
+            //     'tiempo': tiempoS,
+            //     'fecha': date
+            // }).then(function (response) {
+            //     console.log(response);
+            // })
+            // .catch(function (error) {
+            //     console.log(error);
+            // });
         },
         displayBoleto: function displayBoleto(tiempo, precio) {
             precio = parseInt(precio);
@@ -47765,6 +47771,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'a_time': aTime
             }).then(function (response) {
                 me.cerrarModal();
+                if (me.obstructorCar) {
+                    me.almacenarCeldaObs(me.obstructorCar, me.foundCell);
+                }
                 me.reboot();
                 me.getInit();
             }).catch(function (error) {
@@ -47906,7 +47915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var me = this;
             var foundCell = void 0;
             ingresos.data.forEach(function (data) {
-                if (data.plate == me.plate) {
+                if (data.plate == me.plateOut) {
                     foundCar = data;
                 }
             });
@@ -47948,9 +47957,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 this.liberarCelda(obstructorCell, timeObsMs);
             }
+            this.obstructorCar = obstructorCar;
+            this.foundCell = foundCell;
             this.liberarCelda(foundCell, timeMs);
             if (obstructorCar) {
-                this.almacenarCeldaObs(obstructorCar, foundCell);
                 var cellEdit = 'c' + foundCell.codename;
                 this.editCar(obstructorCar, cellEdit);
             }
@@ -47960,14 +47970,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.validarIngreso()) {
                 return;
             }
+            var me = this;
+            this.plate = this.plate.toLowerCase();
+            this.plateOut = this.plate;
             if (this.validarDisponible()) {
                 this.getCeldasFull();
             } else {
-                var me = this;
+                var _me = this;
                 this.plate = this.plate.toLowerCase();
                 this.plateOut = this.plate;
                 axios.get('/ingreso').then(function (response) {
-                    me.getCeldasErase(response);
+                    _me.getCeldasErase(response);
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -47975,13 +47988,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         almacenarCeldaObs: function almacenarCeldaObs(car, cell) {
             var me = this;
+            console.log(cell);
             axios.put('/celda/' + cell.id, {
                 'id': cell.id,
                 'idingreso': car.id,
                 'libre': 0
             }).then(function (response) {
-                me.getInit();
-                me.reboot();
+                me.obstructorCar = {};
+                me.foundCell = {};
             }).catch(function (error) {
                 console.log(error);
             });
@@ -48015,6 +48029,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     cellid = responseget.data[i].id;
                 }
             }
+            console.log(responsepost.id);
             axios.put('/celda/' + cellid, {
                 'id': cellid,
                 'idingreso': responsepost.id,
