@@ -223,9 +223,7 @@
                 postedCar: {},
                 plateOut: '',
                 errorDisponible: 0,
-                celdas: [],
-                obstructorCar: {},
-                foundCell: {}
+                celdas: []
             }
         },
         created() {
@@ -429,9 +427,6 @@
                     'a_time': aTime
                 }).then(function (response) {
                     me.cerrarModal();
-                    if (me.obstructorCar) {
-                        me.almacenarCeldaObs(me.obstructorCar, me.foundCell);
-                    }
                     me.reboot();
                     me.getInit();
                 })
@@ -625,15 +620,47 @@
                         }
                     });
                     this.liberarCelda(obstructorCell, timeObsMs);
+                    this.liberarCeldaObs(foundCell, timeMs, obstructorCar)
+                } else {
+                    this.liberarCelda(foundCell, timeMs);
                 }
-                this.obstructorCar = obstructorCar;
-                this.foundCell = foundCell;
-                this.liberarCelda(foundCell, timeMs);
                 if (obstructorCar) {
                     let cellEdit = 'c'+foundCell.codename;
                     this.editCar(obstructorCar, cellEdit);
                 }
                 this.storePrecio(foundCar, timeMs);
+            },
+            liberarCeldaObs(foundCell, timeMs, obstructorCar){
+                let me = this;
+                axios.get('/celda').then(function (response) {
+                    me.liberarCeldaObs2(foundCell, timeMs, obstructorCar, response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });  
+            },
+            liberarCeldaObs2(foundCell, timeMs, obstructorCar, response){
+                let Time1;
+                let aTime;
+                let me = this;
+                for (let i = 0; i < response.data.length; i++) {
+                    const element = response.data[i];
+                    if (foundCell.id == element.id) {
+                        Time1 = element.a_time;
+                    }
+                }
+                aTime = Time1 + timeMs;
+                axios.put('/celda/'+foundCell.id,{
+                    'id': foundCell.id,
+                    'libre': 1,
+                    'a_time': aTime
+                }).then(function (response) {
+                    me.almacenarCeldaObs(obstructorCar,foundCell);
+                    me.cerrarModal();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             registrarSalida(){
                 if(this.validarIngreso()){
@@ -658,14 +685,13 @@
             },
             almacenarCeldaObs(car, cell){
                 let me = this;
-                console.log(cell);
                 axios.put('/celda/'+cell.id,{
                     'id': cell.id,
                     'idingreso': car.id,
                     'libre': 0
                 }).then(function (response) {
-                    me.obstructorCar = {};
-                    me.foundCell = {};
+                    me.reboot();
+                    me.getInit();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -701,7 +727,6 @@
                         cellid = responseget.data[i].id;
                     }
                 }
-                console.log(responsepost.id);
                 axios.put('/celda/'+cellid,{
                     'id': cellid,
                     'idingreso': responsepost.id,
@@ -789,6 +814,7 @@
             },
             passFoundCar(data){
                 let date_test = new Date(data.created_at.replace(/-/g,"/"));
+                console.log(date_test);
                 this.cslot.forEach(function(slot){
                     if (slot.cell == data.currentc){
                         slot.marca = data.brand;
